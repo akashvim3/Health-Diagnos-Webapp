@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white shadow-xl rounded-lg p-6">
+        <div id="chat-container" class="h-96 overflow-y-auto mb-4">
+            <!-- Chat messages will be inserted here -->
+        </div>
+        
+        <div class="border-t pt-4">
+            <form id="chat-form" class="flex space-x-4">
+                <input type="text" 
+                       id="user-input" 
+                       class="flex-1 rounded-lg border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                       placeholder="Type your health concern...">
+                <button type="submit" 
+                        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    Send
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="mt-4 text-sm text-gray-500">
+        <p>🚨 Medical Disclaimer: This AI assistant provides general information only and is not a substitute for professional medical advice.</p>
+        <p class="mt-2">If you're experiencing a medical emergency, call your local emergency services immediately.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

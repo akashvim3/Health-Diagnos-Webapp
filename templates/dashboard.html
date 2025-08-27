@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Health Summary -->
+        <div class="bg-white shadow-xl rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Health Summary</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="font-medium text-gray-700">Recent Symptoms</h3>
+                    <ul class="mt-2 list-disc list-inside text-gray-600">
+                        {% for symptom in health_data.symptoms %}
+                            <li>{{ symptom }}</li>
+                        {% else %}
+                            <li>No recent symptoms recorded</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-medium text-gray-700">Suggested Conditions</h3>
+                    <ul class="mt-2 list-disc list-inside text-gray-600">
+                        {% for condition in health_data.conditions %}
+                            <li>{{ condition }}</li>
+                        {% else %}
+                            <li>No conditions suggested</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat History -->
+        <div class="bg-white shadow-xl rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Recent Conversations</h2>
+            <div class="space-y-4">
+                {% for chat in chat_history %}
+                    <div class="border-b pb-4">
+                        <p class="text-sm text-gray-500">{{ chat.timestamp }}</p>
+                        <p class="mt-1"><strong>You:</strong> {{ chat.user_message }}</p>
+                        <p class="mt-1"><strong>Assistant:</strong> {{ chat.ai_response }}</p>
+                    </div>
+                {% else %}
+                    <p>No chat history available</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Report -->
+    <div class="mt-6 text-center">
+        <a href="{{ url_for('dashboard.download_report') }}" 
+           class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Download Health Report
+        </a>
+    </div>
+</div>
+{% endblock %}
