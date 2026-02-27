@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+
+{% block title %}Features - Health AI{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Hero -->
+    <div class="text-center mb-16">
+        <span class="inline-block px-4 py-1 rounded-full bg-primary-100 text-primary-600 text-sm font-medium mb-4">
+            Features
+        </span>
+        <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+            Powerful Features for Your Health
+        </h1>
+        <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+            Discover the tools and capabilities that make Health AI your ideal
+            health companion.
+        </p>
+    </div>
+
+    <!-- Main Features -->
+    <div class="space-y-16 mb-20">
+        <!-- Feature 1 -->
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="order-2 lg:order-1">
+                <div
+                    class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center mb-6">
+                    <i class="fas fa-robot text-white text-3xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">AI-Powered Conversations</h2>
+                <p class="text-lg text-slate-600 mb-6">
+                    Our advanced AI assistant understands your symptoms in natural language
+                    and provides personalized health insights. No medical knowledge required -
+                    just describe how you feel.
+                </p>
+                <ul class="space-y-3">
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-slate-600">Natural language processing</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-slate-600">Instant responses 24/7</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-slate-600">Empathetic and understanding</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="order-1 lg:order-2">
+                <div class="bg-white rounded-3xl shadow-2xl p-6 border border-slate-100">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-primary-100 flex items-center justify-center">
+                            <i class="fas fa-robot text-primary-600 text-xl"></i>
+                        </div>
+                        <div class="flex-1 bg-slate-100 rounded-xl px-4 py-3">
+                            <p class="text-sm text-slate-600">I have a headache and feel tired...</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 flex-row-reverse">
+                        <div class="w-12 h-12 rounded-xl bg-primary-500 flex items-center justify-center">
+                            <i class="fas fa-user text-white text-xl"></i>
+                        </div>
+                        <div class="flex-1 bg-primary-50 rounded-xl px-4 py-3">
+                            <p class="text-sm text-primary-800">Based on your symptoms, you may be experiencing a common
+                                cold or fatigue. Make sure to rest and stay hydrated...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mb-6">
+                    <i class="fas fa-microscope text-white text-3xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Advanced Symptom Analysis</h2>
+                <p class="text-lg text-slate-600 mb-6">
+                    Our sophisticated symptom extraction engine identifies potential health
+                    issues from your descriptions, helping you understand what might be
+                    causing your symptoms.
+                </p>
+                <ul class="space-y-3">
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-slate-600">Multi-symptom correlation</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-slate-600">Severity assessment</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-slate-600">Duration tracking</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-white rounded-3xl shadow-2xl p-6 border border-slate-100">
+                <h3 class="text-lg font-semibold text-slate-900 mb-4">Detected Symptoms</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-xl">
+                        <span class="font-medium text-green-800">Fever</span>
+                        <span class="text-sm text-green-600">High confidence</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-amber-50 rounded-xl">
+                        <span class="font-medium text-amber-800">Cough</span>
+                        <span class="text-sm text-amber-600">Medium confidence</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                        <span class="font-medium text-slate-800">Fatigue</span>
+                        <span class="text-sm text-slate-500">Possible</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="order-2 lg:order-1">
+                <div
+                    class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center mb-6">
+                    <i class="fas fa-file-medical-alt text-white text-3xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Comprehensive Health Reports</h2>
+                <p class="text-lg text-slate-600 mb-6">
+                    Generate detailed PDF reports of your health consultations to share
+                    with your healthcare provider or keep for your records.
+                </p>
+                <ul class="space-y-3">
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-slate-600">Downloadable PDF format</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-slate-600">Complete symptom history</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-slate-600">Professional formatting</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="order-1 lg:order-2">
+                <div class="bg-white rounded-3xl shadow-2xl p-6 border border-slate-100">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center">
+                                <i class="fas fa-file-pdf text-red-500"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-slate-900">Health Report</p>
+                                <p class="text-sm text-slate-500">February 2025</p>
+                            </div>
+                        </div>
+                        <button class="px-4 py-2 bg-primary-500 text-white text-sm rounded-lg hover:bg-primary-600">
+                            <i class="fas fa-download mr-1"></i> Download
+                        </button>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Consultations</span>
+                            <span class="font-medium">12</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Symptoms Tracked</span>
+                            <span class="font-medium">8</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Report Date</span>
+                            <span class="font-medium">Feb 27, 2025</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <div
+                    class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center mb-6">
+                    <i class="fas fa-chart-line text-white text-3xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Health Tracking</h2>
+                <p class="text-lg text-slate-600 mb-6">
+                    Monitor your health over time with our comprehensive tracking features.
+                    Keep tabs on symptoms, conditions, and health metrics.
+                </p>
+                <ul class="space-y-3">
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-slate-600">Symptom history</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-slate-600">Health metrics logging</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-slate-600">Trend analysis</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-white rounded-3xl shadow-2xl p-6 border border-slate-100">
+                <h3 class="text-lg font-semibold text-slate-900 mb-4">Recent Activity</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
+                        <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                            <i class="fas fa-comment-medical text-blue-500"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-medium text-slate-900">Consultation</p>
+                            <p class="text-sm text-slate-500">Headache analysis</p>
+                        </div>
+                        <span class="text-xs text-slate-400">2h ago</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
+                        <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
+                            <i class="fas fa-thermometer-half text-green-500"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-medium text-slate-900">Temperature</p>
+                            <p class="text-sm text-slate-500">98.6°F</p>
+                        </div>
+                        <span class="text-xs text-slate-400">Yesterday</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Section -->
+    <div class="bg-slate-900 rounded-3xl p-12 mb-20">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-white mb-4">Your Privacy & Security</h2>
+            <p class="text-slate-400 max-w-2xl mx-auto">
+                We take your privacy seriously. Your health data is encrypted and
+                protected with industry-standard security measures.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="text-center">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center">
+                    <i class="fas fa-lock text-green-400 text-2xl"></i>
+                </div>
+                <h3 class="text-white font-semibold mb-2">Encrypted Data</h3>
+                <p class="text-slate-400 text-sm">All data is encrypted using AES-256 encryption</p>
+            </div>
+            <div class="text-center">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center">
+                    <i class="fas fa-user-shield text-blue-400 text-2xl"></i>
+                </div>
+                <h3 class="text-white font-semibold mb-2">Privacy First</h3>
+                <p class="text-slate-400 text-sm">We never sell or share your personal data</p>
+            </div>
+            <div class="text-center">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center">
+                    <i class="fas fa-server text-purple-400 text-2xl"></i>
+                </div>
+                <h3 class="text-white font-semibold mb-2">Secure Storage</h3>
+                <p class="text-slate-400 text-sm">Hosted on secure, compliant infrastructure</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center">
+        <h2 class="text-3xl font-bold text-slate-900 mb-6">Ready to Experience Health AI?</h2>
+        <p class="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
+            Start using our AI-powered health assistant today. It's free to get started!
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+            <a href="{{ url_for('auth.register') }}"
+                class="px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 shadow-lg shadow-primary-500/25 transition-all">
+                Create Free Account
+            </a>
+            <a href="{{ url_for('chat.chat_page') }}"
+                class="px-8 py-3 bg-white text-slate-700 font-semibold rounded-xl border border-slate-200 hover:border-primary-300 hover:bg-primary-50 transition-all">
+                Try Without Account
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

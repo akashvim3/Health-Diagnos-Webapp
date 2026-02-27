@@ -1,33 +1,342 @@
 {% extends "base.html" %}
 
+{% block title %}AI Health Chat - Health AI{% endblock %}
+
+{% block additional_head %}
+<style>
+    .chat-container {
+        scrollbar-width: thin;
+        scrollbar-color: #cbd5e1 transparent;
+    }
+
+    .chat-container::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .chat-container::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .chat-container::-webkit-scrollbar-thumb {
+        background-color: #cbd5e1;
+        border-radius: 3px;
+    }
+
+    .message-enter {
+        animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .typing-dots span {
+        animation: typing 1.4s infinite both;
+    }
+
+    .typing-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .typing-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    @keyframes typing {
+
+        0%,
+        80%,
+        100% {
+            transform: scale(0.6);
+            opacity: 0.5;
+        }
+
+        40% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="max-w-4xl mx-auto">
-    <div class="bg-white shadow-xl rounded-lg p-6">
-        <div id="chat-container" class="h-96 overflow-y-auto mb-4">
-            <!-- Chat messages will be inserted here -->
-        </div>
-        
-        <div class="border-t pt-4">
-            <form id="chat-form" class="flex space-x-4">
-                <input type="text" 
-                       id="user-input" 
-                       class="flex-1 rounded-lg border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                       placeholder="Type your health concern...">
-                <button type="submit" 
-                        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                    Send
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="grid lg:grid-cols-4 gap-6 h-[calc(100vh-8rem)]">
+        <!-- Sidebar -->
+        <div
+            class="lg:col-span-1 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hidden lg:flex flex-col">
+            <!-- New Chat Button -->
+            <div class="p-4 border-b border-slate-100">
+                <button onclick="startNewChat()"
+                    class="w-full px-4 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-medium rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all flex items-center justify-center gap-2">
+                    <i class="fas fa-plus"></i>
+                    New Chat
                 </button>
-            </form>
+            </div>
+
+            <!-- Recent Sessions -->
+            <div class="flex-1 overflow-y-auto p-4">
+                <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Recent Chats</h3>
+                <div class="space-y-2" id="recent-sessions">
+                    {% for session in recent_sessions %}
+                    <button onclick="loadSession({{ session.id }})"
+                        class="w-full text-left p-3 rounded-xl hover:bg-slate-50 transition-colors group">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-comment text-primary-500 text-xs"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-slate-700 truncate">{{
+                                    session.started_at.strftime('%B %d, %Y') }}</p>
+                                <p class="text-xs text-slate-400">{{ session.messages|length }} messages</p>
+                            </div>
+                        </div>
+                    </button>
+                    {% else %}
+                    <p class="text-sm text-slate-400 text-center py-4">No recent chats</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Tips -->
+            <div class="p-4 border-t border-slate-100 bg-slate-50">
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-lightbulb text-amber-500 text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-slate-700">Tips</p>
+                        <p class="text-xs text-slate-500 mt-1">Be specific about your symptoms, duration, and any
+                            relevant medical history.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    
-    <div class="mt-4 text-sm text-gray-500">
-        <p>🚨 Medical Disclaimer: This AI assistant provides general information only and is not a substitute for professional medical advice.</p>
-        <p class="mt-2">If you're experiencing a medical emergency, call your local emergency services immediately.</p>
+
+        <!-- Main Chat Area -->
+        <div class="lg:col-span-3 bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col overflow-hidden">
+            <!-- Chat Header -->
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
+                        <i class="fas fa-robot text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900">Health AI Assistant</h2>
+                        <p class="text-sm text-green-500 flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                            Online
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="clearChat()"
+                        class="p-2 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+                        title="Clear chat">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <button
+                        class="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+                        title="Settings">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Messages -->
+            <div id="chat-container"
+                class="chat-container flex-1 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-slate-50 to-white">
+                <!-- Welcome Message -->
+                <div class="message-enter">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-robot text-white"></i>
+                        </div>
+                        <div
+                            class="bg-white rounded-2xl rounded-tl-md shadow-sm border border-slate-100 px-5 py-4 max-w-[80%]">
+                            <p class="text-slate-700 leading-relaxed">
+                                Hello! 👋 I'm your AI Health Assistant. I'm here to help you understand your symptoms
+                                and provide general health information.
+                            </p>
+                            <p class="text-slate-700 leading-relaxed mt-3">
+                                Please describe how you're feeling today. For example:
+                            </p>
+                            <ul class="mt-2 space-y-1 text-slate-600 text-sm">
+                                <li>• "I have a headache and feel tired"</li>
+                                <li>• "I've had a cough for 3 days"</li>
+                                <li>• "My stomach hurts after eating"</li>
+                            </ul>
+                            <p class="mt-3 text-xs text-amber-600 bg-amber-50 px-3 py-2 rounded-lg">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                Remember: I provide general information only. Always consult a doctor for medical
+                                advice.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detected Symptoms -->
+            <div id="symptoms-display" class="hidden px-6 py-3 bg-primary-50 border-t border-primary-100">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fas fa-microscope text-primary-500"></i>
+                    <span class="text-sm font-medium text-primary-700">Detected Symptoms</span>
+                </div>
+                <div id="symptoms-list" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-4 border-t border-slate-100 bg-white">
+                <form id="chat-form" class="flex items-end gap-3">
+                    <div class="flex-1 relative">
+                        <textarea id="user-input" rows="1"
+                            class="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-2xl resize-none focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all"
+                            placeholder="Describe your symptoms..." onkeydown="handleKeyDown(event)"
+                            oninput="autoResize(this)"></textarea>
+                        <div class="absolute right-3 bottom-3 flex gap-1">
+                            <button type="button" onclick="showQuickReplies()"
+                                class="p-1.5 rounded-lg text-slate-400 hover:text-primary-500 hover:bg-primary-50 transition-colors">
+                                <i class="fas fa-bolt text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="w-12 h-12 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 text-white flex items-center justify-center hover:from-primary-600 hover:to-primary-700 shadow-md shadow-primary-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        id="send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+
+                <!-- Quick Replies -->
+                <div id="quick-replies" class="hidden mt-3 pt-3 border-t border-slate-100">
+                    <p class="text-xs text-slate-500 mb-2">Quick descriptions:</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="setQuickMessage('I have a headache')"
+                            class="px-3 py-1.5 text-sm bg-slate-100 hover:bg-slate-200 rounded-full transition-colors">
+                            Headache
+                        </button>
+                        <button onclick="setQuickMessage('I feel tired and fatigued')"
+                            class="px-3 py-1.5 text-sm bg-slate-100 hover:bg-slate-200 rounded-full transition-colors">
+                            Fatigue
+                        </button>
+                        <button onclick="setQuickMessage('I have a cough')"
+                            class="px-3 py-1.5 text-sm bg-slate-100 hover:bg-slate-200 rounded-full transition-colors">
+                            Cough
+                        </button>
+                        <button onclick="setQuickMessage('I have fever')"
+                            class="px-3 py-1.5 text-sm bg-slate-100 hover:bg-slate-200 rounded-full transition-colors">
+                            Fever
+                        </button>
+                        <button onclick="setQuickMessage('My stomach hurts')"
+                            class="px-3 py-1.5 text-sm bg-slate-100 hover:bg-slate-200 rounded-full transition-colors">
+                            Stomach pain
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+<script>
+    let currentSessionId = null;
+
+    function autoResize(textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    }
+
+    function handleKeyDown(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            document.getElementById('chat-form').dispatchEvent(new Event('submit'));
+        }
+    }
+
+    function showQuickReplies() {
+        const quickReplies = document.getElementById('quick-replies');
+        quickReplies.classList.toggle('hidden');
+    }
+
+    function setQuickMessage(message) {
+        const input = document.getElementById('user-input');
+        input.value = message;
+        autoResize(input);
+        document.getElementById('quick-replies').classList.add('hidden');
+    }
+
+    function startNewChat() {
+        currentSessionId = null;
+        document.getElementById('chat-container').innerHTML = `
+            <div class="message-enter">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-robot text-white"></i>
+                    </div>
+                    <div class="bg-white rounded-2xl rounded-tl-md shadow-sm border border-slate-100 px-5 py-4 max-w-[80%]">
+                        <p class="text-slate-700 leading-relaxed">
+                            Hello! 👋 I'm your AI Health Assistant. Describe your symptoms and I'll help you understand what might be causing them.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function loadSession(sessionId) {
+        currentSessionId = sessionId;
+        // Load session messages from API
+        fetch(`/api/sessions/${sessionId}`)
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('chat-container');
+                container.innerHTML = '';
+
+                data.messages.forEach(msg => {
+                    if (msg.type === 'user') {
+                        appendMessage('user', msg.content);
+                    } else {
+                        appendMessage('ai', msg.content);
+                    }
+                });
+            });
+    }
+
+    function clearChat() {
+        if (confirm('Are you sure you want to clear this chat?')) {
+            startNewChat();
+        }
+    }
+
+    function displaySymptoms(symptoms) {
+        const display = document.getElementById('symptoms-display');
+        const list = document.getElementById('symptoms-list');
+
+        if (symptoms && symptoms.length > 0) {
+            display.classList.remove('hidden');
+            list.innerHTML = symptoms.map(s => `
+                <span class="inline-flex items-center gap-1 px-3 py-1 bg-white rounded-full text-sm text-primary-700 border border-primary-200">
+                    <i class="fas fa-check-circle text-primary-500"></i>
+                    ${s.name}
+                </span>
+            `).join('');
+        } else {
+            display.classList.add('hidden');
+        }
+    }
+</script>
 {% endblock %}

@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Health AI{% endblock %}
+
+{% block content %}
+<div class="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4">
+    <div class="w-full max-w-md">
+        <!-- Logo -->
+        <div class="text-center mb-8">
+            <a href="{{ url_for('index') }}" class="inline-flex items-center gap-2">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-500/30">
+                    <i class="fas fa-heartbeat text-white text-2xl"></i>
+                </div>
+            </a>
+            <h1 class="text-2xl font-bold text-slate-900 mt-6">Create Account</h1>
+            <p class="text-slate-500 mt-2">Start your journey to better health</p>
+        </div>
+
+        <!-- Register Card -->
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
+            <form id="register-form" method="POST" class="space-y-5">
+                <!-- Username -->
+                <div>
+                    <label for="username" class="block text-sm font-medium text-slate-700 mb-2">
+                        Username
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-slate-400"></i>
+                        </div>
+                        <input type="text" id="username" name="username" required minlength="3"
+                            class="w-full pl-12 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all"
+                            placeholder="johndoe">
+                    </div>
+                    <p class="mt-1 text-xs text-slate-500">At least 3 characters</p>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-slate-700 mb-2">
+                        Email Address
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-slate-400"></i>
+                        </div>
+                        <input type="email" id="email" name="email" required
+                            class="w-full pl-12 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all"
+                            placeholder="you@example.com">
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-slate-700 mb-2">
+                        Password
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-slate-400"></i>
+                        </div>
+                        <input type="password" id="password" name="password" required minlength="8"
+                            class="w-full pl-12 pr-12 py-3 border border-slate-200 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all"
+                            placeholder="••••••••">
+                        <button type="button" onclick="togglePassword('password')"
+                            class="absolute inset-y-0 right-0 pr-4 flex items-center">
+                            <i class="fas fa-eye text-slate-400 hover:text-slate-600" id="password-icon"></i>
+                        </button>
+                    </div>
+                    <div class="mt-2 space-y-1">
+                        <p class="text-xs text-slate-500">Password must have:</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-600" id="length-check">8+
+                                chars</span>
+                            <span class="text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-600"
+                                id="upper-check">Uppercase</span>
+                            <span class="text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-600"
+                                id="lower-check">Lowercase</span>
+                            <span class="text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-600"
+                                id="number-check">Number</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label for="confirm_password" class="block text-sm font-medium text-slate-700 mb-2">
+                        Confirm Password
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-slate-400"></i>
+                        </div>
+                        <input type="password" id="confirm_password" name="confirm_password" required
+                            class="w-full pl-12 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all"
+                            placeholder="••••••••">
+                    </div>
+                </div>
+
+                <!-- Terms -->
+                <div class="flex items-start">
+                    <input type="checkbox" id="terms" required
+                        class="w-4 h-4 mt-0.5 text-primary-500 border-slate-300 rounded focus:ring-primary-500">
+                    <label for="terms" class="ml-2 text-sm text-slate-600">
+                        I agree to the
+                        <a href="#" class="text-primary-600 hover:text-primary-700">Terms of Service</a>
+                        and
+                        <a href="#" class="text-primary-600 hover:text-primary-700">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit"
+                    class="w-full py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all transform hover:scale-[1.02]">
+                    Create Account
+                </button>
+            </form>
+        </div>
+
+        <!-- Login Link -->
+        <p class="text-center mt-6 text-slate-600">
+            Already have an account?
+            <a href="{{ url_for('auth.login') }}" class="text-primary-600 hover:text-primary-700 font-semibold">
+                Log in
+            </a>
+        </p>
+    </div>
+</div>
+
+<script>
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(inputId + '-icon');
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+
+    // Password validation
+    const passwordInput = document.getElementById('password');
+    passwordInput.addEventListener('input', function () {
+        const value = this.value;
+
+        document.getElementById('length-check').classList.toggle('bg-green-100', value.length >= 8);
+        document.getElementById('length-check').classList.toggle('text-green-700', value.length >= 8);
+        document.getElementById('length-check').classList.toggle('bg-slate-100', value.length < 8);
+        document.getElementById('length-check').classList.toggle('text-slate-600', value.length < 8);
+
+        document.getElementById('upper-check').classList.toggle('bg-green-100', /[A-Z]/.test(value));
+        document.getElementById('upper-check').classList.toggle('text-green-700', /[A-Z]/.test(value));
+        document.getElementById('upper-check').classList.toggle('bg-slate-100', !/[A-Z]/.test(value));
+        document.getElementById('upper-check').classList.toggle('text-slate-600', !/[A-Z]/.test(value));
+
+        document.getElementById('lower-check').classList.toggle('bg-green-100', /[a-z]/.test(value));
+        document.getElementById('lower-check').classList.toggle('text-green-700', /[a-z]/.test(value));
+        document.getElementById('lower-check').classList.toggle('bg-slate-100', !/[a-z]/.test(value));
+        document.getElementById('lower-check').classList.toggle('text-slate-600', !/[a-z]/.test(value));
+
+        document.getElementById('number-check').classList.toggle('bg-green-100', /[0-9]/.test(value));
+        document.getElementById('number-check').classList.toggle('text-green-700', /[0-9]/.test(value));
+        document.getElementById('number-check').classList.toggle('bg-slate-100', !/[0-9]/.test(value));
+        document.getElementById('number-check').classList.toggle('text-slate-600', !/[0-9]/.test(value));
+    });
+</script>
+{% endblock %}

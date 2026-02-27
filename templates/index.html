@@ -1,0 +1,382 @@
+{% extends "base.html" %}
+
+{% block title %}Health AI - Smart Health Assistant{% endblock %}
+
+{% block additional_head %}
+<style>
+    .hero-gradient {
+        background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 50%, #8b5cf6 100%);
+    }
+
+    .blob {
+        position: absolute;
+        filter: blur(80px);
+        z-index: 0;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px -12px rgba(14, 165, 233, 0.25);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative overflow-hidden">
+    <!-- Background -->
+    <div class="absolute inset-0 hero-gradient opacity-5"></div>
+    <div class="blob w-96 h-96 bg-primary-300/30 rounded-full top-20 -left-20"></div>
+    <div class="blob w-80 h-80 bg-purple-300/30 rounded-full bottom-20 right-10"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <!-- Left Content -->
+            <div class="space-y-8">
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 border border-primary-100">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="text-sm font-medium text-primary-700">AI-Powered Health Assistant</span>
+                </div>
+
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
+                    Your Smart
+                    <span class="bg-gradient-to-r from-primary-500 to-purple-600 bg-clip-text text-transparent">
+                        Health Companion
+                    </span>
+                </h1>
+
+                <p class="text-lg text-slate-600 max-w-xl leading-relaxed">
+                    Get instant health insights powered by advanced AI. Describe your symptoms,
+                    receive potential condition analysis, and get personalized health recommendations
+                    - all in a secure, private environment.
+                </p>
+
+                <div class="flex flex-wrap gap-4">
+                    <a href="{{ url_for('chat.chat_page') }}"
+                        class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all transform hover:scale-105">
+                        <i class="fas fa-robot"></i>
+                        Start Chat Now
+                    </a>
+                    <a href="{{ url_for('features') }}"
+                        class="inline-flex items-center gap-2 px-6 py-3 bg-white text-slate-700 font-semibold rounded-xl border border-slate-200 hover:border-primary-300 hover:bg-primary-50 transition-all">
+                        <i class="fas fa-play-circle text-primary-500"></i>
+                        See Features
+                    </a>
+                </div>
+
+                <!-- Trust Badges -->
+                <div class="flex flex-wrap items-center gap-6 pt-4">
+                    <div class="flex items-center gap-2 text-slate-500">
+                        <i class="fas fa-shield-alt text-green-500"></i>
+                        <span class="text-sm">Secure & Private</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-slate-500">
+                        <i class="fas fa-user-md text-primary-500"></i>
+                        <span class="text-sm">Expert-Backed</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-slate-500">
+                        <i class="fas fa-clock text-purple-500"></i>
+                        <span class="text-sm">24/7 Available</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Content - Illustration -->
+            <div class="relative hidden lg:block">
+                <div class="relative w-full max-w-md mx-auto">
+                    <!-- Main Card -->
+                    <div class="bg-white rounded-3xl shadow-2xl p-8 border border-slate-100 relative z-10">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div
+                                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
+                                <i class="fas fa-heartbeat text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Health Analysis</h3>
+                                <p class="text-slate-500">Powered by AI</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="p-4 rounded-xl bg-green-50 border border-green-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                                        <i class="fas fa-check text-green-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-green-800">Common Cold</p>
+                                        <p class="text-sm text-green-600">75% confidence</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-4 rounded-xl bg-amber-50 border border-amber-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
+                                        <i class="fas fa-exclamation text-amber-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-amber-800">Stay Hydrated</p>
+                                        <p class="text-sm text-amber-600">Drink plenty of fluids</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-slate-100">
+                            <p class="text-xs text-slate-400 text-center">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                This is not medical advice. Consult a professional.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Floating Elements -->
+                    <div
+                        class="absolute -top-4 -right-4 w-24 h-24 bg-white rounded-2xl shadow-xl flex items-center justify-center animate-float">
+                        <i class="fas fa-pills text-3xl text-primary-500"></i>
+                    </div>
+
+                    <div class="absolute -bottom-4 -left-4 w-20 h-20 bg-white rounded-2xl shadow-xl flex items-center justify-center animate-float"
+                        style="animation-delay: 1s;">
+                        <i class="fas fa-user-md text-2xl text-purple-500"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wave Divider -->
+    <div class="absolute bottom-0 left-0 right-0">
+        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z"
+                fill="white" />
+        </svg>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="bg-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="text-center">
+                <div class="text-4xl font-bold text-primary-600 mb-2">50K+</div>
+                <div class="text-slate-500">Users Helped</div>
+            </div>
+            <div class="text-center">
+                <div class="text-4xl font-bold text-primary-600 mb-2">10K+</div>
+                <div class="text-slate-500">Symptoms Analyzed</div>
+            </div>
+            <div class="text-center">
+                <div class="text-4xl font-bold text-primary-600 mb-2">24/7</div>
+                <div class="text-slate-500">Availability</div>
+            </div>
+            <div class="text-center">
+                <div class="text-4xl font-bold text-primary-600 mb-2">99%</div>
+                <div class="text-slate-500">User Satisfaction</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-20 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <span class="inline-block px-4 py-1 rounded-full bg-primary-100 text-primary-600 text-sm font-medium mb-4">
+                Features
+            </span>
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                Everything You Need for Better Health
+            </h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                Our AI-powered platform provides comprehensive health assistance to help you understand your symptoms
+                and make informed decisions.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 card-hover transition-all">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center mb-6">
+                    <i class="fas fa-robot text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">AI-Powered Chat</h3>
+                <p class="text-slate-600 leading-relaxed">
+                    Describe your symptoms to our intelligent AI assistant and receive instant analysis and personalized
+                    recommendations.
+                </p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 card-hover transition-all">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mb-6">
+                    <i class="fas fa-stethoscope text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">Symptom Analysis</h3>
+                <p class="text-slate-600 leading-relaxed">
+                    Advanced NLP technology extracts and analyzes symptoms from your descriptions to provide accurate
+                    assessments.
+                </p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 card-hover transition-all">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center mb-6">
+                    <i class="fas fa-file-medical-alt text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">Health Reports</h3>
+                <p class="text-slate-600 leading-relaxed">
+                    Generate comprehensive PDF health reports to share with your healthcare provider for better
+                    consultation.
+                </p>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 card-hover transition-all">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center mb-6">
+                    <i class="fas fa-chart-line text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">Health Tracking</h3>
+                <p class="text-slate-600 leading-relaxed">
+                    Track your symptoms over time and monitor your health patterns with detailed analytics and
+                    visualizations.
+                </p>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 card-hover transition-all">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-400 to-rose-600 flex items-center justify-center mb-6">
+                    <i class="fas fa-user-shield text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">Privacy First</h3>
+                <p class="text-slate-600 leading-relaxed">
+                    Your health data is encrypted and stored securely. We prioritize your privacy and never share your
+                    information.
+                </p>
+            </div>
+
+            <!-- Feature 6 -->
+            <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 card-hover transition-all">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center mb-6">
+                    <i class="fas fa-clock text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">24/7 Availability</h3>
+                <p class="text-slate-600 leading-relaxed">
+                    Access health assistance anytime, anywhere. Our AI is always available to help with your health
+                    concerns.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <span class="inline-block px-4 py-1 rounded-full bg-purple-100 text-purple-600 text-sm font-medium mb-4">
+                How It Works
+            </span>
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                Simple Steps to Better Health
+            </h2>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Step 1 -->
+            <div class="text-center">
+                <div
+                    class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
+                    <span class="text-3xl font-bold text-white">1</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">Describe Your Symptoms</h3>
+                <p class="text-slate-600">
+                    Tell our AI assistant about how you're feeling in plain language. No medical knowledge required.
+                </p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="text-center">
+                <div
+                    class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
+                    <span class="text-3xl font-bold text-white">2</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">Get AI Analysis</h3>
+                <p class="text-slate-600">
+                    Our advanced AI analyzes your symptoms and provides potential conditions with confidence levels.
+                </p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="text-center">
+                <div
+                    class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
+                    <span class="text-3xl font-bold text-white">3</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3">Take Action</h3>
+                <p class="text-slate-600">
+                    Receive personalized recommendations and know when to seek professional medical attention.
+                </p>
+            </div>
+        </div>
+
+        <div class="text-center mt-12">
+            <a href="{{ url_for('chat.chat_page') }}"
+                class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all transform hover:scale-105">
+                <i class="fas fa-rocket"></i>
+                Try It Now - It's Free
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-20 bg-gradient-to-r from-primary-600 to-purple-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+            Ready to Take Control of Your Health?
+        </h2>
+        <p class="text-xl text-white/90 mb-8">
+            Join thousands of users who trust Health AI for their health concerns.
+            Start your journey to better health today.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+            <a href="{{ url_for('auth.register') }}"
+                class="px-8 py-4 bg-white text-primary-600 font-semibold rounded-xl hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg">
+                Create Free Account
+            </a>
+            <a href="{{ url_for('chat.chat_page') }}"
+                class="px-8 py-4 bg-primary-700 text-white font-semibold rounded-xl hover:bg-primary-800 transition-all border border-white/20">
+                Try Without Account
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Disclaimer -->
+<section class="py-8 bg-slate-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-50 border border-amber-200 text-amber-700">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span class="text-sm font-medium">Important Disclaimer</span>
+        </div>
+        <p class="mt-4 text-slate-600 text-sm">
+            Health AI is an informational tool only and does not provide medical advice, diagnosis, or treatment.
+            Always seek the advice of your physician or other qualified health provider with any questions you may have
+            regarding a medical condition. Never disregard professional medical advice or delay in seeking it because
+            of something you have read from Health AI.
+        </p>
+    </div>
+</section>
+{% endblock %}

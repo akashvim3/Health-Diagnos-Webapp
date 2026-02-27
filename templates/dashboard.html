@@ -1,62 +1,253 @@
 {% extends "base.html" %}
 
+{% block title %}Dashboard - Health AI{% endblock %}
+
+{% block additional_head %}
+<style>
+    .stat-card {
+        transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 40px -12px rgba(14, 165, 233, 0.25);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="max-w-6xl mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Health Summary -->
-        <div class="bg-white shadow-xl rounded-lg p-6">
-            <h2 class="text-xl font-semibold mb-4">Health Summary</h2>
-            <div class="space-y-4">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-slate-900">Health Dashboard</h1>
+        <p class="text-slate-500 mt-1">Track your health and view your consultation history</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Sessions -->
+        <div class="stat-card bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between">
                 <div>
-                    <h3 class="font-medium text-gray-700">Recent Symptoms</h3>
-                    <ul class="mt-2 list-disc list-inside text-gray-600">
-                        {% for symptom in health_data.symptoms %}
-                            <li>{{ symptom }}</li>
-                        {% else %}
-                            <li>No recent symptoms recorded</li>
-                        {% endfor %}
-                    </ul>
+                    <p class="text-sm text-slate-500">Total Sessions</p>
+                    <p class="text-3xl font-bold text-slate-900 mt-1">{{ stats.total_sessions }}</p>
                 </div>
-                
-                <div>
-                    <h3 class="font-medium text-gray-700">Suggested Conditions</h3>
-                    <ul class="mt-2 list-disc list-inside text-gray-600">
-                        {% for condition in health_data.conditions %}
-                            <li>{{ condition }}</li>
-                        {% else %}
-                            <li>No conditions suggested</li>
-                        {% endfor %}
-                    </ul>
+                <div class="w-14 h-14 rounded-2xl bg-primary-100 flex items-center justify-center">
+                    <i class="fas fa-comments text-primary-600 text-xl"></i>
                 </div>
+            </div>
+            <div class="mt-4 flex items-center text-sm">
+                <span class="text-green-500 flex items-center gap-1">
+                    <i class="fas fa-arrow-up"></i> 12%
+                </span>
+                <span class="text-slate-400 ml-2">vs last month</span>
             </div>
         </div>
 
-        <!-- Chat History -->
-        <div class="bg-white shadow-xl rounded-lg p-6">
-            <h2 class="text-xl font-semibold mb-4">Recent Conversations</h2>
-            <div class="space-y-4">
-                {% for chat in chat_history %}
-                    <div class="border-b pb-4">
-                        <p class="text-sm text-gray-500">{{ chat.timestamp }}</p>
-                        <p class="mt-1"><strong>You:</strong> {{ chat.user_message }}</p>
-                        <p class="mt-1"><strong>Assistant:</strong> {{ chat.ai_response }}</p>
-                    </div>
-                {% else %}
-                    <p>No chat history available</p>
-                {% endfor %}
+        <!-- Total Messages -->
+        <div class="stat-card bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500">Messages</p>
+                    <p class="text-3xl font-bold text-slate-900 mt-1">{{ stats.total_messages }}</p>
+                </div>
+                <div class="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center">
+                    <i class="fas fa-envelope text-purple-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4 flex items-center text-sm">
+                <span class="text-green-500 flex items-center gap-1">
+                    <i class="fas fa-arrow-up"></i> 8%
+                </span>
+                <span class="text-slate-400 ml-2">vs last month</span>
+            </div>
+        </div>
+
+        <!-- Unique Symptoms -->
+        <div class="stat-card bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500">Symptoms Tracked</p>
+                    <p class="text-3xl font-bold text-slate-900 mt-1">{{ stats.unique_symptoms }}</p>
+                </div>
+                <div class="w-14 h-14 rounded-2xl bg-amber-100 flex items-center justify-center">
+                    <i class="fas fathermometer-half text-amber-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4 flex items-center text-sm">
+                <span class="text-slate-400">Total unique symptoms</span>
+            </div>
+        </div>
+
+        <!-- Last Activity -->
+        <div class="stat-card bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500">Last Activity</p>
+                    <p class="text-3xl font-bold text-slate-900 mt-1">
+                        {% if stats.recent_activity %}
+                        {{ (now() - stats.recent_activity).days }}d
+                        {% else %}
+                        N/A
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center">
+                    <i class="fas fa-clock text-green-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4 flex items-center text-sm">
+                <span class="text-slate-400">Days since last chat</span>
             </div>
         </div>
     </div>
 
-    <!-- Download Report -->
-    <div class="mt-6 text-center">
-        <a href="{{ url_for('dashboard.download_report') }}" 
-           class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Download Health Report
-        </a>
+    <!-- Main Content Grid -->
+    <div class="grid lg:grid-cols-3 gap-6">
+        <!-- Recent Sessions -->
+        <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                <h2 class="text-lg font-bold text-slate-900">Recent Consultations</h2>
+                <a href="{{ url_for('dashboard.chat_history') }}"
+                    class="text-sm text-primary-600 hover:text-primary-700 font-medium">
+                    View All
+                </a>
+            </div>
+            <div class="divide-y divide-slate-100">
+                {% for session in chat_sessions[:5] %}
+                <div class="p-4 hover:bg-slate-50 transition-colors">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center">
+                                <i class="fas fa-comment-medical text-primary-500"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-slate-900">{{ session.started_at.strftime('%B %d, %Y at %I:%M
+                                    %p') }}</p>
+                                <p class="text-sm text-slate-500">{{ session.messages|length }} messages</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <a href="{{ url_for('dashboard.session_detail', session_id=session.id) }}"
+                                class="px-3 py-1.5 text-sm bg-primary-50 text-primary-600 rounded-lg hover:bg-primary-100 transition-colors">
+                                View
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="p-8 text-center">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 flex items-center justify-center">
+                        <i class="fas fa-inbox text-slate-400 text-2xl"></i>
+                    </div>
+                    <p class="text-slate-500">No consultations yet</p>
+                    <a href="{{ url_for('chat.chat_page') }}"
+                        class="mt-2 inline-block text-primary-600 font-medium hover:text-primary-700">
+                        Start your first consultation
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Quick Actions & Health Summary -->
+        <div class="space-y-6">
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                <h3 class="text-lg font-bold text-slate-900 mb-4">Quick Actions</h3>
+                <div class="space-y-3">
+                    <a href="{{ url_for('chat.chat_page') }}"
+                        class="flex items-center gap-3 p-3 rounded-xl bg-primary-50 hover:bg-primary-100 transition-colors">
+                        <div class="w-10 h-10 rounded-lg bg-primary-500 flex items-center justify-center">
+                            <i class="fas fa-plus text-white"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-primary-700">New Consultation</p>
+                            <p class="text-xs text-primary-600">Chat with AI assistant</p>
+                        </div>
+                    </a>
+
+                    <a href="{{ url_for('dashboard.health_records') }}"
+                        class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors">
+                        <div class="w-10 h-10 rounded-lg bg-slate-200 flex items-center justify-center">
+                            <i class="fas fa-file-medical text-slate-600"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-slate-700">Health Records</p>
+                            <p class="text-xs text-slate-500">Manage your health info</p>
+                        </div>
+                    </a>
+
+                    <a href="{{ url_for('dashboard.health_metrics') }}"
+                        class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors">
+                        <div class="w-10 h-10 rounded-lg bg-slate-200 flex items-center justify-center">
+                            <i class="fas fa-heartbeat text-slate-600"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-slate-700">Health Metrics</p>
+                            <p class="text-xs text-slate-500">Track vitals & metrics</p>
+                        </div>
+                    </a>
+
+                    <a href="{{ url_for('dashboard.download_report') }}"
+                        class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors">
+                        <div class="w-10 h-10 rounded-lg bg-slate-200 flex items-center justify-center">
+                            <i class="fas fa-download text-slate-600"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-slate-700">Download Report</p>
+                            <p class="text-xs text-slate-500">Export health summary</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Recent Symptoms -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                <h3 class="text-lg font-bold text-slate-900 mb-4">Recent Symptoms</h3>
+                <div class="flex flex-wrap gap-2">
+                    {% for symptom in recent_symptoms[:8] %}
+                    <span class="px-3 py-1.5 bg-slate-100 text-slate-700 rounded-full text-sm">
+                        {{ symptom.symptom_name }}
+                    </span>
+                    {% else %}
+                    <p class="text-sm text-slate-400">No symptoms recorded</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Emergency Contacts -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-slate-900">Emergency Contacts</h3>
+                    <a href="{{ url_for('dashboard.emergency_contacts_page') }}"
+                        class="text-sm text-primary-600 hover:text-primary-700">
+                        Manage
+                    </a>
+                </div>
+                <div class="space-y-3">
+                    {% for contact in emergency_contacts[:3] %}
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50">
+                        <div
+                            class="w-10 h-10 rounded-full {% if contact.is_primary %}bg-red-100{% else %}bg-slate-200{% endif %} flex items-center justify-center">
+                            <i
+                                class="fas fa-phone text-sm {% if contact.is_primary %}text-red-500{% else %}text-slate-500{% endif %}"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-medium text-slate-900 truncate">{{ contact.name }}</p>
+                            <p class="text-xs text-slate-500">{{ contact.phone }}</p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p class="text-sm text-slate-400 text-center py-2">No emergency contacts</p>
+                    <a href="{{ url_for('dashboard.emergency_contacts_page') }}"
+                        class="block text-center text-sm text-primary-600 hover:text-primary-700">
+                        Add emergency contact
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
