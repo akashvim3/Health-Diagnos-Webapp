@@ -38,8 +38,8 @@ An AI-powered healthcare chatbot platform that provides general health advice, s
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/digital-health-assistant.git
-cd digital-health-assistant
+git clone https://github.com/akashvim3/Health-Diagnos-Webapp.git
+cd Health-Diagnos-Webapp
 ```
 
 2. Install dependencies:
@@ -90,7 +90,7 @@ Developed by Akash
 
 ## Contact 📧
 
-- Email: your.email@example.com
+- Email: ajyak749@gmail.com
 - LinkedIn: [Your LinkedIn]
 - GitHub: [Your GitHub]
 
